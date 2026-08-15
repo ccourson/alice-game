@@ -3,6 +3,9 @@ const commandLine = document.getElementById("command-line");
 const commandInput = document.getElementById("command");
 const screen = document.getElementById("screen");
 
+let aliceTimer = null;
+let aliceHasSpoken = false;
+
 const bootText = `
 SYSTEM/12
 
@@ -25,7 +28,6 @@ function sleep(ms) {
 async function typeText(text, speed = 18) {
     for (const char of text) {
         output.textContent += char;
-
         screen.scrollTop = screen.scrollHeight;
 
         if (char === "\n") {
@@ -50,18 +52,51 @@ function hidePrompt() {
     commandLine.classList.add("hidden");
 }
 
+function resetAliceTimer() {
+    clearTimeout(aliceTimer);
+
+    if (aliceHasSpoken) {
+        return;
+    }
+
+    aliceTimer = setTimeout(() => {
+        aliceSpeaks();
+    }, 10000);
+}
+
+async function aliceSpeaks() {
+    if (aliceHasSpoken) {
+        return;
+    }
+
+    aliceHasSpoken = true;
+    clearTimeout(aliceTimer);
+
+    // Discard anything the player was typing.
+    commandInput.value = "";
+
+    hidePrompt();
+
+    print();
+    await typeText("ARE YOU THERE?", 30);
+    print();
+
+    showPrompt();
+}
+
 async function processCommand(rawCommand) {
     const command = rawCommand.trim();
+
+    // Blank Enter triggers Alice immediately.
+    if (!command) {
+        await aliceSpeaks();
+        return;
+    }
 
     print(`> ${command}`);
     print();
 
-    if (!command) {
-        return;
-    }
-
     switch (command.toUpperCase()) {
-
         case "LOOK":
             print("YOU ARE SITTING AT A DESK.");
             print();
@@ -90,18 +125,24 @@ async function processCommand(rawCommand) {
 }
 
 commandInput.addEventListener("keydown", async event => {
-    if (event.key !== "Enter") {
+    if (event.key === "Enter") {
+        clearTimeout(aliceTimer);
+
+        const command = commandInput.value;
+        commandInput.value = "";
+
+        hidePrompt();
+
+        await processCommand(command);
+
+        showPrompt();
+        resetAliceTimer();
+
         return;
     }
 
-    const command = commandInput.value;
-    commandInput.value = "";
-
-    hidePrompt();
-
-    await processCommand(command);
-
-    showPrompt();
+    // Any typing postpones Alice.
+    resetAliceTimer();
 });
 
 document.addEventListener("click", () => {
@@ -116,6 +157,7 @@ async function start() {
     print();
 
     showPrompt();
+    resetAliceTimer();
 }
 
 start();
