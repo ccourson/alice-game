@@ -1,7 +1,3 @@
-The release description could serve as a README, but I’d make the README more permanent. The README should explain **what this project is**, while GitHub Releases document what changed at each milestone.
-
-I’d use something like this now:
-
 # ALICE
 
 > **Something is waiting at the terminal.**
