@@ -6,6 +6,10 @@ const screen = document.getElementById("screen");
 let aliceTimer = null;
 let aliceHasSpoken = false;
 
+let gameState = {
+    waitingForPresence: false
+};
+
 const bootText = `
 SYSTEM/12
 
@@ -70,6 +74,8 @@ async function aliceSpeaks() {
     }
 
     aliceHasSpoken = true;
+    gameState.waitingForPresence = true;
+
     clearTimeout(aliceTimer);
 
     // Discard anything the player was typing.
@@ -87,14 +93,28 @@ async function aliceSpeaks() {
 async function processCommand(rawCommand) {
     const command = rawCommand.trim();
 
+    print(`> ${command}`);
+    print();
+
     // Blank Enter triggers Alice immediately.
     if (!command) {
         await aliceSpeaks();
         return;
     }
 
-    print(`> ${command}`);
-    print();
+    // Alice is waiting for an answer.
+    if (
+        gameState.waitingForPresence &&
+        command.toUpperCase() === "YES"
+    ) {
+        gameState.waitingForPresence = false;
+    
+        await typeText("GOOD.", 30);
+        print();
+        print();
+    
+        return;
+    }
 
     switch (command.toUpperCase()) {
         case "LOOK":
