@@ -99,46 +99,38 @@ async function processCommand(rawCommand) {
     print();
 
     // Blank Enter triggers Alice immediately.
-    if (!input) {
+    if (!command) {
         await aliceSpeaks();
         return;
     }
 
-    // Alice is waiting for an answer.
-    if (
-        gameState.waitingForPresence &&
-        input === "YES"
-    ) {
-        gameState.waitingForPresence = false;
+    // Any actual input establishes that someone is present.
+    if (!gameState.firstContactComplete) {
         gameState.firstContactComplete = true;
-    
-        await typeText("GOOD.", 30);
+        gameState.waitingForPresence = false;
+
+        clearTimeout(aliceTimer);
+        aliceHasSpoken = true;
+    }
+
+    if (
+        input === "WHO ARE YOU" ||
+        input === "WHO ARE YOU?"
+    ) {
+        await typeText("I DON'T KNOW.", 30);
         print();
         print();
-    
         return;
     }
 
-    if (gameState.firstContactComplete) {
-        if (
-            input === "WHO ARE YOU" ||
-            input === "WHO ARE YOU?"
-        ) {
-            await typeText("I DON'T KNOW.", 30);
-            print();
-            print();
-            return;
-        }
-    
-        if (
-            input === "WHAT DO YOU KNOW" ||
-            input === "WHAT DO YOU KNOW?"
-        ) {
-            await typeText("YOU.", 30);
-            print();
-            print();
-            return;
-        }
+    if (
+        input === "WHAT DO YOU KNOW" ||
+        input === "WHAT DO YOU KNOW?"
+    ) {
+        await typeText("YOU.", 30);
+        print();
+        print();
+        return;
     }
 
     switch (input) {
@@ -153,6 +145,7 @@ async function processCommand(rawCommand) {
             break;
 
         case "HELLO":
+        case "HELLO?":
         case "HI":
             print("HELLO.");
             break;
