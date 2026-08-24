@@ -7,7 +7,8 @@ let aliceTimer = null;
 let aliceHasSpoken = false;
 
 let gameState = {
-    waitingForPresence: false
+    waitingForPresence: false,
+    firstContactComplete: false
 };
 
 const bootText = `
@@ -108,8 +109,23 @@ async function processCommand(rawCommand) {
         command.toUpperCase() === "YES"
     ) {
         gameState.waitingForPresence = false;
+        gameState.firstContactComplete = true;
     
         await typeText("GOOD.", 30);
+        print();
+        print();
+    
+        return;
+    }
+
+    if (
+        gameState.firstContactComplete &&
+        (
+            command.toUpperCase() === "WHO ARE YOU" ||
+            command.toUpperCase() === "WHO ARE YOU?"
+        )
+    ) {
+        await typeText("I DON'T KNOW.", 30);
         print();
         print();
     
@@ -130,11 +146,6 @@ async function processCommand(rawCommand) {
         case "HELLO":
         case "HI":
             print("HELLO.");
-            break;
-
-        case "WHO ARE YOU":
-        case "WHO ARE YOU?":
-            print("I DON'T KNOW.");
             break;
 
         default:
