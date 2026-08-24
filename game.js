@@ -93,12 +93,13 @@ async function aliceSpeaks() {
 
 async function processCommand(rawCommand) {
     const command = rawCommand.trim();
+    const input = command.toUpperCase();
 
     print(`> ${command}`);
     print();
 
     // Blank Enter triggers Alice immediately.
-    if (!command) {
+    if (!input) {
         await aliceSpeaks();
         return;
     }
@@ -106,7 +107,7 @@ async function processCommand(rawCommand) {
     // Alice is waiting for an answer.
     if (
         gameState.waitingForPresence &&
-        command.toUpperCase() === "YES"
+        input === "YES"
     ) {
         gameState.waitingForPresence = false;
         gameState.firstContactComplete = true;
@@ -120,8 +121,8 @@ async function processCommand(rawCommand) {
 
     if (gameState.firstContactComplete) {
         if (
-            command.toUpperCase() === "WHO ARE YOU" ||
-            command.toUpperCase() === "WHO ARE YOU?"
+            input === "WHO ARE YOU" ||
+            input === "WHO ARE YOU?"
         ) {
             await typeText("I DON'T KNOW.", 30);
             print();
@@ -130,8 +131,8 @@ async function processCommand(rawCommand) {
         }
     
         if (
-            command.toUpperCase() === "WHAT DO YOU KNOW" ||
-            command.toUpperCase() === "WHAT DO YOU KNOW?"
+            input === "WHAT DO YOU KNOW" ||
+            input === "WHAT DO YOU KNOW?"
         ) {
             await typeText("YOU.", 30);
             print();
@@ -140,7 +141,7 @@ async function processCommand(rawCommand) {
         }
     }
 
-    switch (command.toUpperCase()) {
+    switch (input) {
         case "LOOK":
             print("YOU ARE SITTING AT A DESK.");
             print();
