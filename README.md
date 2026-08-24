@@ -20,6 +20,18 @@ There is intentionally very little instruction.
 
 ## Current Version
 
+**v0.2 — First Contact**
+
+The terminal is no longer simply waiting for commands.
+
+If left alone, something notices your presence — or absence.
+
+The player can establish first contact in more than one way, and the terminal remembers that contact has occurred.
+
+Try interacting with it naturally.
+
+There is intentionally very little instruction.
+
 **v0.1 — Terminal**
 
 The first milestone establishes the environment in which the game will exist:
@@ -136,6 +148,8 @@ v0.2  The terminal notices you.
 v0.3  ...
 ```
 
+The release history preserves the game's development as it gradually gains capabilities.
+
 ## v0.1
 
 The terminal is running.
@@ -162,3 +176,27 @@ READY.
 
 > _
 ```
+
+## v0.2
+
+The terminal is listening.
+
+It may speak without being spoken to.
+
+```text
+SYSTEM/12
+
+48K MEMORY ........ OK
+TERMINAL .......... OK
+STORAGE ........... OK
+
+RESTORING SESSION...
+
+READY.
+
+> _
+```
+
+Wait.
+
+Or don't.
