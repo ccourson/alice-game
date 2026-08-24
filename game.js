@@ -104,6 +104,21 @@ async function processCommand(rawCommand) {
         return;
     }
 
+    // Alice has asked "ARE YOU THERE?"
+    if (
+        gameState.waitingForPresence &&
+        input === "YES"
+    ) {
+        gameState.waitingForPresence = false;
+        gameState.firstContactComplete = true;
+
+        await typeText("GOOD.", 30);
+        print();
+        print();
+
+        return;
+    }
+
     // Any actual input establishes that someone is present.
     if (!gameState.firstContactComplete) {
         gameState.firstContactComplete = true;
