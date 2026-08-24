@@ -124,18 +124,20 @@ async function processCommand(rawCommand) {
             command.toUpperCase() === "WHO ARE YOU?"
         ) {
             await typeText("I DON'T KNOW.", 30);
+            print();
+            print();
+            return;
         }
-        else if (
+    
+        if (
             command.toUpperCase() === "WHAT DO YOU KNOW" ||
             command.toUpperCase() === "WHAT DO YOU KNOW?"
         ) {
             await typeText("YOU.", 30);
+            print();
+            print();
+            return;
         }
-
-        print();
-        print();
-
-        return;
     }
 
     switch (command.toUpperCase()) {
