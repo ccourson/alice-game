@@ -118,17 +118,23 @@ async function processCommand(rawCommand) {
         return;
     }
 
-    if (
-        gameState.firstContactComplete &&
-        (
+    if (gameState.firstContactComplete) {
+        if (
             command.toUpperCase() === "WHO ARE YOU" ||
             command.toUpperCase() === "WHO ARE YOU?"
-        )
-    ) {
-        await typeText("I DON'T KNOW.", 30);
+        ) {
+            await typeText("I DON'T KNOW.", 30);
+        }
+        else if (
+            command.toUpperCase() === "WHAT DO YOU KNOW" ||
+            command.toUpperCase() === "WHAT DO YOU KNOW?"
+        ) {
+            await typeText("YOU.", 30);
+        }
+
         print();
         print();
-    
+
         return;
     }
 
