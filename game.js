@@ -148,6 +148,16 @@ async function processCommand(rawCommand) {
         return;
     }
 
+    if (
+        input === "WHAT DO YOU KNOW ABOUT ME" ||
+        input === "WHAT DO YOU KNOW ABOUT ME?"
+    ) {
+        await typeText("YOU ARE NOT ALICE.", 30);
+        print();
+        print();
+        return;
+    }
+
     switch (input) {
         case "LOOK":
             print("YOU ARE SITTING AT A DESK.");
